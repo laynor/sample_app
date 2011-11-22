@@ -2,3 +2,6 @@
 db/*.sqlite3
 log/*.log
 tmp/
+/app/views/layouts/cane.rb~
+/app/views/pages/about.html.erb~
+/app/views/pages/help.html.erb~
