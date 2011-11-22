@@ -56,20 +56,40 @@ def related_spec_files(path)
 end
 
 def run_suite
+  tl = Time.now.localtime
+  puts " --- Running suite <#{tl.day}/#{tl.month}/#{tl.year} #{tl.hour}:#{tl.min}:#{tl.sec}> ---\n\n"
   run_all_specs
   run_all_features
 end
 
-watch('spec/spec_helper\.rb') { run_all_specs }
-watch('spec/.*/.*_spec\.rb') { |m| run_spec_file(m[0]) }
-watch('app/.*/.*\.rb') { |m| related_spec_files(m[0]).map {|tf| run_spec_file(tf) } }
+watch('spec/spec_helper\.rb') {
+  tl = Time.now.localtime
+  puts " --- Running suite <#{tl.day}/#{tl.month}/#{tl.year} #{tl.hour}:#{tl.min}:#{tl.sec}> ---\n\n"
+  run_all_specs
+}
+watch('spec/.*/.*_spec\.rb') {
+  |m|
+  tl = Time.now.localtime
+  puts " --- Running suite <#{tl.day}/#{tl.month}/#{tl.year} #{tl.hour}:#{tl.min}:#{tl.sec}> ---\n\n"
+  run_spec_file(m[0])
+}
+watch('app/.*/.*\.rb') {
+  |m|
+  related_spec_files(m[0]).map {|tf| run_spec_file(tf) }
+}
+watch('app/.*/.*\.erb') {
+  run_all_specs
+}
+
 watch('features/.*/.*\.feature') { run_all_features }
 
+tl = Time.now.localtime
+puts " --- Initial Run <#{tl.day}/#{tl.month}/#{tl.year} #{tl.hour}:#{tl.min}:#{tl.sec}> --- "
 run_all_specs
 
 # Ctrl-\
 Signal.trap 'QUIT' do
-  puts " --- Running all specs ---\n\n"
+  puts " --- Running all specs <#{tl.day}/#{tl.month}/#{tl.year} #{tl.hour}:#{tl.min}:#{tl.sec}> ---\n\n"
   run_all_specs
 end
 
