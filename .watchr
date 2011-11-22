@@ -74,10 +74,12 @@ watch('spec/.*/.*_spec\.rb') {
   run_spec_file(m[0])
 }
 watch('app/.*/.*\.rb') {
-  |m|
-  related_spec_files(m[0]).map {|tf| run_spec_file(tf) }
+  run_all_specs
 }
 watch('app/.*/.*\.erb') {
+  run_all_specs
+}
+watch('config/routes.rb') {
   run_all_specs
 }
 
